@@ -1,6 +1,6 @@
 INCLUDES = -I$(srcdir)/ref
-LDFLAGS = -module
-LIBS = -lcrypto
+LDFLAGS = @LDFLAGS@ -module
+LIBS = @LIBS@ -lcrypto
 
 lib_LTLIBRARIES = \
 	igtf-pkcs11.la \
@@ -25,8 +25,11 @@ proxy_pkcs11_la_SOURCES =		\
 
 myproxy_pkcs11_la_SOURCES =		\
 	$(COMMON_PKCS11_SOURCES)	\
+	myproxy.c			\
 	myproxy-pkcs11.c
+myproxy_pkcs11_la_LIBADD =		\
+	-lmyproxy_noflavor
 
-#check_PROGRAMS = test_pkcs11
-#test_pkcs11_SOURCES = test_soft_pkcs11.c
-#test_pkcs11_LDADD = proxy-pkcs11.la
+check_PROGRAMS = test_pkcs11
+test_pkcs11_SOURCES = test_soft_pkcs11.c
+test_pkcs11_LDADD = myproxy-pkcs11.la

@@ -29,6 +29,7 @@ AC_ARG_WITH(myproxy,
       AC_CHECK_LIB(myproxy_noflavor, myproxy_init_client, ,
 		   AC_MSG_ERROR([libmyproxy_noflavor not found]))
       HAVE_MYPROXY=yes
+      AC_DEFINE([HAVE_MYPROXY], [1], [MyProxy support is enabled])
     ]
 )
 
