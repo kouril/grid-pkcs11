@@ -26,13 +26,13 @@ C_Initialize(CK_VOID_PTR a)
     if (ret)
 	return ret;
 
-    soft_token.myproxy_server = getenv("MYPROXY_SERVER");
-    if (soft_token.myproxy_server == NULL) {
+    gpkcs11_soft_token.myproxy_server = getenv("MYPROXY_SERVER");
+    if (gpkcs11_soft_token.myproxy_server == NULL) {
 	gpkcs11_log("MYPROXY_SERVER not set in the environment, exiting.\n");
 	return CKR_GENERAL_ERROR;
     }
 
-    soft_token.myproxy_user = getenv("LOGNAME");
+   gpkcs11_soft_token.myproxy_user = getenv("LOGNAME");
     /* XXX add some fallbacks */
     
     return CKR_OK;
@@ -45,26 +45,26 @@ C_Login(CK_SESSION_HANDLE hSession,
         CK_ULONG ulPinLen)
 {
     char *pin = NULL;
-    int i, ret;
+    int i;
     char *creds = NULL;
     CK_RV ret;
 
-    st_logf("Login\n");
-    if (gpkcs11_verify_session_handle(hSession, NULL) != CK_OK)
+    gpkcs11_log("Login\n");
+    if (gpkcs11_verify_session_handle(hSession, NULL) != CKR_OK)
 	gpkcs11_app_error("session not open");
 
-    ret = get_myproxy_creds(soft_token.myproxy_server,
-			    soft_token.myproxy_username,
+    ret = get_myproxy_creds(gpkcs11_soft_token.myproxy_server,
+			    gpkcs11_soft_token.myproxy_user,
 			    pin, &creds);
     if (ret)
 	goto end;
 
-    ret = gpkcs11_add_credentials(soft_token.myproxy_username, creds,
-			          creds, soft_token.myproxy_username, 0);
+    ret = gpkcs11_add_credentials(gpkcs11_soft_token.myproxy_user, creds,
+			          creds, gpkcs11_soft_token.myproxy_user, 0);
     if (ret)
 	goto end;
 
-    soft_token.flags.login_done = 1;
+    gpkcs11_soft_token.flags.login_done = 1;
     ret = CKR_OK;
 
 end:

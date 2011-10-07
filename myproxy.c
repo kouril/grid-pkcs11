@@ -1,6 +1,6 @@
-#include "locl.h"
+#include "gpkcs11_locl.h"
 
-int
+CK_RV
 get_myproxy_creds(char *server, char *username, char *password,
                   char **creds)
 {
@@ -43,8 +43,8 @@ get_myproxy_creds(char *server, char *username, char *password,
 
     ret = myproxy_init_client(socket_attrs);
     if (ret < 0) {
-	st_logf("Error contacting MyProxy server %s: %s\n",
-		socket_attrs->pshost, verror_get_string());
+	gpkcs11_log("Error contacting MyProxy server %s: %s\n",
+		    socket_attrs->pshost, verror_get_string());
 	ret = CKR_GENERAL_ERROR;
 	goto end;
     }
@@ -52,8 +52,8 @@ get_myproxy_creds(char *server, char *username, char *password,
     GSI_SOCKET_allow_anonymous(socket_attrs->gsi_socket, 1);
     ret = myproxy_authenticate_init(socket_attrs, NULL);
     if (ret < 0) {
-	st_logf("Error authenticating MyProxy server %s: %s\n",
-		socket_attrs->pshost, verror_get_string());
+	gpkcs11_log("Error authenticating MyProxy server %s: %s\n",
+		    socket_attrs->pshost, verror_get_string());
 	ret = CKR_GENERAL_ERROR;
 	goto end;
     }
@@ -65,8 +65,8 @@ get_myproxy_creds(char *server, char *username, char *password,
 
     requestlen = myproxy_serialize_request_ex(client_request, &request_buffer);
     if (requestlen < 0) {
-	st_logf("Error preparing MyProxy request: %s\n",
-		verror_get_string());
+	gpkcs11_log("Error preparing MyProxy request: %s\n",
+		    verror_get_string());
 	ret = CKR_GENERAL_ERROR;
 	goto end;
     }
@@ -74,8 +74,8 @@ get_myproxy_creds(char *server, char *username, char *password,
     ret = myproxy_send(socket_attrs, request_buffer, requestlen);
     free(request_buffer);
     if (ret < 0) {
-	st_logf("Error sending MyProxy request: %s\n",
-		verror_get_string());
+	gpkcs11_log("Error sending MyProxy request: %s\n",
+		    verror_get_string());
 	ret = CKR_GENERAL_ERROR;
 	goto end;
     }
@@ -83,8 +83,8 @@ get_myproxy_creds(char *server, char *username, char *password,
     ret = myproxy_recv_response_ex(socket_attrs, server_response,
 				   client_request);
     if (ret != 0) {
-	st_logf("Error receiving MyProxy response: %s\n",
-		verror_get_string());
+	gpkcs11_log("Error receiving MyProxy response: %s\n",
+		    verror_get_string());
 	ret = CKR_GENERAL_ERROR;
 	goto end;
     }
@@ -92,8 +92,8 @@ get_myproxy_creds(char *server, char *username, char *password,
     ret = myproxy_accept_credentials(socket_attrs, creds_file,
 				     sizeof(creds_file));
     if (ret < 0) {
-	st_logf("Error receiving credentials: %s\n",
-		verror_get_string());
+	gpkcs11_log("Error receiving credentials: %s\n",
+		    verror_get_string());
 	ret = CKR_GENERAL_ERROR;
 	goto end;
     }

@@ -24,6 +24,11 @@
 #include <pkcs11.h>
 #include <pkcs11n.h>
 
+#ifdef HAVE_MYPROXY
+#include <myproxy.h>
+#include <gsi_socket.h>
+#endif
+
 #define MANUFACTURER_ID "CESNET"
 
 #define OPENSSL_ASN1_MALLOC_ENCODE(T, B, BL, S, R)			\
@@ -120,7 +125,7 @@ typedef struct gpkcs11_soft_token_t {
     gpkcs11_session_state state[MAX_NUM_SESSION];
     FILE *logfile;
     char *myproxy_server;
-    char *myproxy_username;
+    char *myproxy_user;
 } gpkcs11_soft_token_t;
 
 void
@@ -152,3 +157,7 @@ gpkcs11_add_credentials(char *label,
                         const char *private_key_file,
                         char *id,
                         int anchor);
+
+CK_RV
+get_myproxy_creds(char *server, char *username, char *password,
+                  char **creds);
