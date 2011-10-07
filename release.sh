@@ -2,11 +2,11 @@
 # $Id: release.sh,v 1.2 2005/08/28 15:36:00 lha Exp $
 #
 
-package=soft-pkcs11
+package=grid-pkcs11
 ftp=/afs/su.se/home/l/h/lha/Public/soft-pkcs11
 checkversion=YES
 name=`basename $0`
-root=vr.l.nxs.se:/cvsroot
+root=git@github.com:kouril
 
 if [ X"$#" = X0 ]; then
     echo "$name [-tag branch] version"
@@ -61,14 +61,27 @@ echo preparing "${package}-${version}" from tag ${tag_name}
 
 exportfile=${package}-export-log.$$
 
+release_dir=/tmp/release-${package}.$$
+mkdir $release_dir
+cd $release_dir || exit 1
+
 echo exporting tree...
-cvs -d $root \
-	export -d "${package}-${version}" -r "${tag_name}" ${package} > $exportfile
+git clone ${root}/${package} > $exportfile
 res=$?
 if [ X"$res" != X0 ]; then
-    echo "cvs export failed, check $exportfile"
+    echo "git clone failed, check $exportfile"
     exit 1
 fi
+
+( cd $package && \
+  git archive --format=tar --prefix="${package}-${version}/" "${tag_name}") | \
+tar xf -
+res=$?
+if [ X"$res" != X0 ]; then
+    echo "git archive failed"
+    exit 1
+fi
+
 rm $exportfile
 
 ac="notfound"
@@ -102,13 +115,14 @@ if [ -d "${package}-${version}" ] ; then
 	    res=$?
 	    done=1
 	fi
-	if [ -f regen.sh ]; then
-	    sh regen.sh
+	if [ -f bootstrap.sh ]; then
+	    sh bootstrap.sh
 	    res=$?
 	    done=1
 	fi
 	if [ "X$done" = X0 ] ; then
 	    autoreconf -f -i
+	    res=$?
 	fi
 	cd ..
 fi
@@ -141,6 +155,6 @@ if [ -d $HOME/.gnupg ] ; then
 fi
 
 echo Done!
-echo Dont forget to copy the "${package}-${version}.tar.gz" file to the ftp-site.
-test X"$ftp" != X && echo "cp ${package}-${version}.tar.gz* $ftp"
+echo Dont forget to copy the "${release_dir}/${package}-${version}.tar.gz" file to the ftp-site.
+test X"$ftp" != X && echo "cp ${release_dir}/${package}-${version}.tar.gz* $ftp"
 exit 0
