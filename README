@@ -1,0 +1,27 @@
+This package contains a set of PKCS11 modules that make easier the life on
+the Grid.  More information and latest version of the package can be found
+at http://www.metacentrum.cz/en/about/devel/
+
+The IGTF module provides access to certificates of CAs stored on the local
+filesystem. It tries to load files from default location
+(/etc/grid-security/certificates) and make them available to the
+application. The X509_CERT_DIR environment variable can be used to specify
+an alternative location of the certificates.
+
+The proxy module interfaces the user's X.509 proxy certificate stored on the
+local filesystem. Using this module it is possible to get your grid
+credentials to any PKCS11-enabled application. The proxy is expected to
+reside in the default location unless the X509_USER_PROXY is given.
+
+The myproxy module makes it possible to access credentials in a remote
+repository from PKCS11-enabled application.
+
+The modules must be compiled and installed using the standard procedure.
+After that they can installed in the application by standard way. To install
+the module to applications from the Mozilla family you can also use the
+install-pkcs11 script.
+
+The implementation is heavily based on the soft-pkcs11 token Love Hörnquist
+Åstrand, which is available from http://people.su.se/~lha/soft-pkcs11/
+
+Daniel Kouřil, daniel.kouril@cesnet.cz
