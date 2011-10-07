@@ -18,6 +18,7 @@ AC_PROG_LIBTOOL
 
 AC_CONFIG_FILES(Makefile)
 
+HAVE_MYPROXY=no
 AC_ARG_WITH(myproxy,
     [  --with-myproxy=PATH	  Path to MyProxy directory],
     [ if test "x$withval" = "xyes" ; then
@@ -27,7 +28,10 @@ AC_ARG_WITH(myproxy,
       LDFLAGS="-L${withval}/lib $LDFLAGS"
       AC_CHECK_LIB(myproxy_noflavor, myproxy_init_client, ,
 		   AC_MSG_ERROR([libmyproxy_noflavor not found]))
+      HAVE_MYPROXY=yes
     ]
 )
+
+AM_CONDITIONAL([HAVE_MYPROXY], [test x$HAVE_MYPROXY = xyes])
 
 AC_OUTPUT
