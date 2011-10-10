@@ -18,17 +18,25 @@ AC_PROG_LIBTOOL
 
 AC_CONFIG_FILES(Makefile)
 
+MYPROXY_FLAVOR=noflavor
+AC_ARG_WITH(myproxy-flavor,
+    [  --with-myproxy-flavor=FLAVOR	MyProxy/Globus flavor to use ('noflavor' is used by default)],
+    [ MYPROXY_FLAVOR="$withval" ]
+)
+
+
 HAVE_MYPROXY=no
 AC_ARG_WITH(myproxy,
     [  --with-myproxy=PATH	  Path to MyProxy directory],
     [ if test "x$withval" = "xyes" ; then
           AC_MSG_ERROR([--with-myproxy requires PATH argument])
       fi
-      CPPFLAGS="-I${withval}/include/noflavor $CPPFLAGS"
+      CPPFLAGS="-I${withval}/include/$MYPROXY_FLAVOR $CPPFLAGS"
       LDFLAGS="-L${withval}/lib $LDFLAGS"
-      AC_CHECK_LIB(myproxy_noflavor, myproxy_init_client, ,
-		   AC_MSG_ERROR([libmyproxy_noflavor not found]))
+      AC_CHECK_LIB(myproxy_$MYPROXY_FLAVOR, myproxy_init_client, ,
+		   AC_MSG_ERROR([libmyproxy_$MYPROXY_FLAVOR not found]))
       HAVE_MYPROXY=yes
+      LIBS="$LIBS -lmyproxy_$MYPROXY_FLAVOR"
       AC_DEFINE([HAVE_MYPROXY], [1], [MyProxy support is enabled])
     ]
 )

@@ -27,8 +27,6 @@ myproxy_pkcs11_la_SOURCES =		\
 	$(COMMON_PKCS11_SOURCES)	\
 	myproxy.c			\
 	myproxy-pkcs11.c
-myproxy_pkcs11_la_LIBADD =		\
-	-lmyproxy_noflavor
 
 check_PROGRAMS = test_pkcs11
 test_pkcs11_SOURCES = test_soft_pkcs11.c
