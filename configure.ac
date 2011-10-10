@@ -36,7 +36,6 @@ AC_ARG_WITH(myproxy,
       AC_CHECK_LIB(myproxy_$MYPROXY_FLAVOR, myproxy_init_client, ,
 		   AC_MSG_ERROR([libmyproxy_$MYPROXY_FLAVOR not found]))
       HAVE_MYPROXY=yes
-      LIBS="$LIBS -lmyproxy_$MYPROXY_FLAVOR"
       AC_DEFINE([HAVE_MYPROXY], [1], [MyProxy support is enabled])
     ]
 )
