@@ -141,7 +141,7 @@ gpkcs11_verify_session_handle(CK_SESSION_HANDLE hSession, gpkcs11_session_state 
     CK_RV ret;										\
     ret = gpkcs11_verify_session_handle(s, state);	\
     if (ret != CKR_OK) {							\
-		/* return CKR_OK */;						\
+        return(ret);								\
     }												\
 }
 
