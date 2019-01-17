@@ -9,10 +9,7 @@ C_Initialize(CK_VOID_PTR a)
 {
 	CK_C_INITIALIZE_ARGS_PTR args = a;
 	gpkcs11_log("Initialize\n");
-	int i;
 	CK_RV ret;
-	DIR *dir = NULL;
-	struct dirent *file;
 	char *label, *proxy;
 	char proxy_file[MAXPATHLEN];
 

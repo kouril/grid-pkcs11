@@ -287,7 +287,6 @@ gpkcs11_add_credentials(char *label, const char *cert_file, const char *private_
 	CK_BBOOL bool_true = CK_TRUE;
 	CK_BBOOL bool_false = CK_FALSE;
 	CK_OBJECT_CLASS c;
-	CK_CERTIFICATE_TYPE cert_type = CKC_X_509;
 	CK_KEY_TYPE key_type;
 	CK_MECHANISM_TYPE mech_type;
 	CK_RV ret = CKR_GENERAL_ERROR;
