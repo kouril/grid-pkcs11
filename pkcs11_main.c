@@ -1161,7 +1161,7 @@ C_Verify(CK_SESSION_HANDLE hSession,
 		goto out;
 	}
 
-	len = RSA_public_decrypt(ulDataLen, pData, buffer, rsa, padding);
+	len = RSA_public_decrypt(ulSignatureLen, pSignature, buffer, rsa, padding);
 	gpkcs11_log("private encrypt done\n");
 	if (len <= 0) {
 		ret = CKR_DEVICE_ERROR;
@@ -1170,12 +1170,12 @@ C_Verify(CK_SESSION_HANDLE hSession,
 	if (len > buffer_len)
 		abort();
 
-	if (len != ulSignatureLen) {
+	if (len != ulDataLen) {
 		ret = CKR_GENERAL_ERROR;
 		goto out;
 	}
 
-	if (memcmp(pSignature, buffer, len) != 0) {
+	if (memcmp(pData, buffer, len) != 0) {
 		ret = CKR_GENERAL_ERROR;
 		goto out;
 	}

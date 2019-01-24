@@ -165,7 +165,7 @@ main(int argc, char **argv)
 		if (ret != CKR_OK)
 			return 1;
 
-		ret = C_Verify(session, (CK_BYTE *)signature, ck_sigsize, (CK_BYTE *)sighash, strlen(sighash));
+		ret = C_Verify(session, (CK_BYTE *)sighash, strlen(sighash), (CK_BYTE *)signature, ck_sigsize);
 		if (ret != CKR_OK) {
 			printf("message: %d\n", ret);
 			return 1;
