@@ -136,6 +136,8 @@ main(int argc, char **argv)
 	if (ret != CKR_OK)
 		return 1;
 
+	/* N.B.to make the test work with our modules, the value of the CKA_ID
+	   parameter of gpkcs11_add_credentials() must match the id parameter below */
 	ret = find_object(session, "cert", CKO_PUBLIC_KEY, &public);
 	if (ret)
 		return 1;
