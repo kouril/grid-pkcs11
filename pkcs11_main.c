@@ -219,7 +219,7 @@ gpkcs11_init_token(const char *version, const char *description, gpkcs11_soft_to
 	gpkcs11_soft_token.object.num_objs = 0;
 
 	gpkcs11_soft_token.logfile = NULL;
-#if 0
+#if 1
 	gpkcs11_soft_token.logfile = fopen("/tmp/log-pkcs11.txt", "a");
 #endif
 	gpkcs11_soft_token.desc.text = description;
