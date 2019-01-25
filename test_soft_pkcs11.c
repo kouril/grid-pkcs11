@@ -159,7 +159,7 @@ main(int argc, char **argv)
 		ck_sigsize = sizeof(signature);
 		ret = C_Sign(session, (CK_BYTE *)sighash, strlen(sighash), (CK_BYTE *)signature, &ck_sigsize);
 		if (ret != CKR_OK) {
-			printf("message: %d\n", ret);
+			printf("message: %ld\n", ret);
 			return 1;
 		}
 
@@ -169,7 +169,7 @@ main(int argc, char **argv)
 
 		ret = C_Verify(session, (CK_BYTE *)sighash, strlen(sighash), (CK_BYTE *)signature, ck_sigsize);
 		if (ret != CKR_OK) {
-			printf("message: %d\n", ret);
+			printf("message: %ld\n", ret);
 			return 1;
 		}
 	}
@@ -188,7 +188,7 @@ main(int argc, char **argv)
 		ck_sigsize = sizeof(signature);
 		ret = C_Encrypt(session, (CK_BYTE *)sighash, strlen(sighash), (CK_BYTE *)signature, &ck_sigsize);
 		if (ret != CKR_OK) {
-			printf("message: %d\n", ret);
+			printf("message: %ld\n", ret);
 			return 1;
 		}
 
@@ -199,7 +199,7 @@ main(int argc, char **argv)
 		outsize = sizeof(outdata);
 		ret = C_Decrypt(session, (CK_BYTE *)signature, ck_sigsize, (CK_BYTE *)outdata, &outsize);
 		if (ret != CKR_OK) {
-			printf("message: %d\n", ret);
+			printf("message: %ld\n", ret);
 			return 1;
 		}
 
